@@ -1,0 +1,84 @@
+<div class="row">
+    <div class="col-md-4 bg-white friends-messages">
+
+        <!-- =============================================================== -->
+        <!-- member list -->
+        <h4 class="text-center"><i class="fa fa-users"></i> Your friendlist</h4>
+        <div ng-if="!me.friends.length">You have no friends :-(</div>
+
+        <ul class="friend-list" ng-if="me.friends.length">
+            <li ng-class="
+                {'active bounceInDown': friend.username == currentFriend.username}
+                 " ng-repeat="friend in me.friends">
+                <a class="clearfix" ng-click="getMessages(friend)" style="cursor: pointer">
+                    <img ng-src="/images/userimages/{{friend.userimage}}" alt="" class="img-circle">
+                    <div class="friend-name">
+                        <strong>{{friend.first_name}} {{friend.last_name}}</strong>
+                    </div>
+                    <div class="last-message text-muted" ng-if="messages.getNewMessagesQuantity(friend)">
+                        {{messages.getLastMessageFrom(friend) | limitTo: 20}}
+                    </div>
+                    <!--small class="time text-muted">Just now</small-->
+                    <small class="chat-alert label label-info">{{messages.getNewMessagesQuantity(friend)}}</small>
+                </a>
+            </li>
+        </ul>
+        <h4 class="text-center"><i class="fa fa-plus-circle"></i> Pending Requests</h4>
+        <p class="text-center small" ng-if="!me.pending_req.length">You have no pending requests</p>
+        <ul class="friend-list" ng-if="me.pending_req.length">
+            <li ng-repeat="friend in me.pending_req">
+                <a class="clearfix" style="cursor: pointer">
+                    <img ng-src="/images/userimages/{{friend.userimage}}" alt="" class="img-circle">
+                    <div class="friend-name">
+                        <strong>{{friend.first_name}} {{friend.last_name}}</strong>
+                        <button class="btn btn-primary" ng-click="addToFriends(friend)">Add</button>
+                        <button class="btn btn-warning" ng-click="declineFriend(friend)">Decline</button>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!--=========================================================-->
+    <!-- selected chat -->
+    <div class="col-md-8 chat-wall" ng-show="me.friends.length">
+        <div ng-click="showMore()" class="btn btn-success show-more-msg" ng-show="messages[currentFriend.username].length > messagesLimit">
+            <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+            Show me more
+        </div>
+        <div class="chat-message">
+
+            <ul class="chat">
+                <li ng-repeat="message in messages[currentFriend.username]  | limitTo: -messagesLimit track by $index" ng-class="
+                {'left clearfix': message.author.username == me.username ,
+                 'right clearfix': message.author.username != me.username}
+                 ">
+
+                    <span ng-class="
+                {'chat-img pull-left': message.author.username == me.username ,
+                 'chat-img pull-right': message.author.username != me.username}
+                 ">
+                        <img ng-src="/images/userimages/{{message.author.userimage}}" alt="User Avatar">
+                    </span>
+                    <div class="chat-body clearfix">
+                        <div class="header">
+                            <a href="#/users/{{message.author.username}}"><strong class="primary-font">{{message.author.first_name}} {{message.author.last_name}}</strong></a>
+                            <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> {{message.date | date: 'dd MMMM yyyy HH:mm '}}</small>
+                        </div>
+                        <p>
+                            {{message.body}}
+                        </p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <form ng-submit="sendMessage()" class="input-group">
+                <input class="form-control border no-shadow no-rounded" placeholder="Type your message here" ng-model="newMessage">
+                    <span class="input-group-btn">
+                        <button class="btn btn-success no-rounded" type="submit">Send</button>
+                    </span>
+            </form>
+        </div><!-- /input-group -->
+    </div>
+</div>

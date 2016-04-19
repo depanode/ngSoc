@@ -1,0 +1,103 @@
+<html>
+<head>
+    <title>ngReddit</title>
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/bower_components/AngularJS-Toaster/toaster.css" rel="stylesheet">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+
+    <script src="/bower_components/socket.io-client/socket.io.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASafB1KYVS0VcL8104Qco9rC01DWU7xbs"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/angularjs-geolocation/src/geolocation.js"></script>
+    <script src="/bower_components/angular-messages/angular-messages.js"></script>
+    <script src="/bower_components/AngularJS-Toaster/toaster.js"></script>
+    <script src="/bower_components/angular-socket-io/socket.js"></script>
+    <script src="/javascripts/angularApp.js"></script>
+    <script src="/javascripts/services/posts.service.js"></script>
+    <script src="/javascripts/services/auth.service.js"></script>
+    <script src="/javascripts/services/interceptors.js"></script>
+    <script src="/javascripts/services/geo.service.js"></script>
+    <script src="/javascripts/services/users.service.js"></script>
+    <script src="/javascripts/services/socket.service.js"></script>
+    <script src="/javascripts/services/messages.service.js"></script>
+    <script src="/javascripts/services/google.service.js"></script>
+    <script src="/javascripts/services/admin.service.js"></script>
+    <script src="/javascripts/services/editUser.service.js"></script>
+    <script src="/javascripts/controllers/MainCtrl.js"></script>
+    <script src="/javascripts/controllers/AdminCtrl.js"></script>
+    <script src="/javascripts/controllers/PostsCtrl.js"></script>
+    <script src="/javascripts/controllers/AuthCtrl.js"></script>
+    <script src="/javascripts/controllers/NavCtrl.js"></script>
+    <script src="/javascripts/controllers/FriendsCtrl.js"></script>
+    <script src="/javascripts/controllers/LocationsCtrl.js"></script>
+    <script src="/javascripts/controllers/ResetCtrl.js"></script>
+    <script src="/javascripts/controllers/EditUserCtrl.js"></script>
+    <script src="/javascripts/directives/comparePasswords.js"></script>
+    <script src="/javascripts/directives/fileModel.js"></script>
+
+</head>
+<body ng-app="ngReddit">
+
+<nav class="navbar navbar-inverse nav masthead navbar-top" ng-controller="NavCtrl">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/users/{{currentUser().username}}">ngReddit</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li ng-show="isLoggedIn()">
+                    <a href="#/users/{{currentUser().username}}">
+                        <span aria-hidden="true" class="glyphicon glyphicon-home"></span>
+                        Home
+                    </a>
+                </li>
+                <li ng-show="isLoggedIn()">
+                    <a href="#/users/{{currentUser().username}}/friends" ng-click="resetEvents()">
+                        <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
+                        Friends
+                        <span ng-if="events" class="badge badge-messages">{{events}}</span>
+                    </a>
+                </li>
+                <li ng-show="isLoggedIn()">
+                    <a href="#/users/{{currentUser().username}}/locations">
+                        <span aria-hidden="true" class="glyphicon glyphicon-map-marker"></span>
+                        Locations
+                    </a>
+                </li>
+                <li ng-if="currentUser().isAdmin">
+                    <a href="#/admin">
+                        <span aria-hidden="true" class="glyphicon glyphicon-wrench"></span> Admin
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-show="isLoggedIn()"><a>{{ currentUser().username }}</a></li>
+                <li ng-show="isLoggedIn()"><a href="" ng-click="logout()"><span aria-hidden="true" class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+                <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
+                <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+    <ng-view></ng-view>
+</div>
+<toaster-container toaster-options="{'position-class': 'toast-bottom-right'}"></toaster-container>
+<hr/>
+<!-- Footer -->
+<div class="footer">
+    <p class="text-center"><span class="glyphicon glyphicon-check"></span> Created by Deparus for Thinkmobiles course -
+        <a href="https://placeholder.io/">2016</a> | <a href="https://github.com/depanode/ngSoc">Github Repo</a></p>
+</div>
+
+</body>
+</html>

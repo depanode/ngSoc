@@ -1,0 +1,120 @@
+<div class="row">
+    <div class="col-md-12">
+        {{message}}
+
+        <button ng-click="getAllUsers()">Get all users</button>
+        <button ng-click="getPendingActivations()">Get pending activations</button>
+        <hr>
+        <div ng-show="users">
+            <b>All Users:</b><br>
+            Filter: <input type="text" ng-model="userfilter">
+            <table class="table table-striped user-table">
+                <tr>
+                    <th> _id</th>
+                    <th> location</th>
+                    <th> email</th>
+                    <th> date_of_birth</th>
+                    <th> gender</th>
+                    <th> first_name</th>
+                    <th> last_name</th>
+                    <th> username</th>
+                    <th> pending_req</th>
+                    <th> isAdmin</th>
+                    <th> userimage</th>
+                    <th> ...</th>
+                    <th> ...</th>
+                    <th> ...</th>
+                </tr>
+                <tr ng-repeat="user in users | filter: userfilter">
+                    <td title="{{user._id}}"> ...{{ user._id | limitTo: -6}}</td>
+                    <td> {{ user.location }}</td>
+                    <td><input type="email" ng-model="user.email" class="form-control"></td>
+                    <td><input type="text" ng-model="user.date_of_birth" class="form-control"></td>
+                    <td><input type="text" ng-model="user.gender" class="form-control"></td>
+                    <td><input type="text" ng-model="user.first_name" class="form-control"></td>
+                    <td><input type="text" ng-model="user.last_name" class="form-control"></td>
+                    <td> {{ user.username }}</td>
+                    <td> {{ user.pending_req}}</td>
+                    <td><input type="text" ng-model="user.isAdmin" class="form-control"></td>
+                    <td><input type="text" ng-model="user.userimage" class="form-control"></td>
+                    <td>
+                        <button class="btn btn-warning btn-xs" ng-click="editUser(user)">Modify User</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-xs" ng-click="removeUser(user)">Remove User</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-info btn-xs" ng-click="getPosts(user)">Show posts</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div ng-show="posts">
+            <b>Posts:</b>
+            <table class="table table-striped user-table">
+                <tr>
+                    <th> _id</th>
+                    <th> date</th>
+                    <th> author</th>
+                    <th> upvotes</th>
+                    <th> body</th>
+                    <th> comments</th>
+                    <th>...</th>
+                </tr>
+                <tr ng-repeat="post in posts">
+                    <td> {{ post._id }}</td>
+                    <td> {{ post.date | date: dd.mm.yyyy }}</td>
+                    <td> {{ post.author.username}}</td>
+                    <td> {{ post.upvotes}}</td>
+                    <td title="{{post.title}}"> {{ post.title | limitTo: 100}}</td>
+                    <td> {{ post.comments.length}}</td>
+                    <td>
+                        <button class="btn btn-danger btn-xs" ng-click="deletePost(post)">Delete Post</button>
+                    </td>
+                </tr>
+            </table>
+
+        <div ng-show="activations">
+        <b>Pending activations:</b>
+            <table class="table table-striped user-table">
+                <tr>
+                    <th> _id</th>
+                    <th> location</th>
+                    <th> email</th>
+                    <th> date_of_birth</th>
+                    <th> gender</th>
+                    <th> first_name</th>
+                    <th> last_name</th>
+                    <th> username</th>
+                    <th> friends</th>
+                    <th> pending_req</th>
+                    <th> isAdmin</th>
+                    <th> userimage</th>
+                    <th>...</th>
+                    <th>...</th>
+                </tr>
+                <tr ng-repeat="user in activations">
+                    <td> {{ user._id }}</td>
+                    <td> {{ user.location }}</td>
+                    <td> {{ user.email }}</td>
+                    <td> {{ user.date_of_birth | date: dd.mm.yyyy }}</td>
+                    <td> {{ user.gender}}</td>
+                    <td> {{ user.first_name}}</td>
+                    <td> {{ user.last_name}}</td>
+                    <td> {{ user.username}}</td>
+                    <td> {{ user.friends}}</td>
+                    <td> {{ user.pending_req}}</td>
+                    <td> {{ user.isAdmin}}</td>
+                    <td> {{ user.userimage}}</td>
+                    <td>
+                        <button class="btn btn-info" ng-click="activateEmail(user.VERIFICATION_HASH)">Activate</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="activateEmailDecline(user.VERIFICATION_HASH)">Decline Activation</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

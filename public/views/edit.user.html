@@ -1,0 +1,104 @@
+<div class="page-header">
+    <h3>Edit Account</h3>
+</div>
+
+<form ng-submit="save(editForm.$valid)" novalidate name="editForm" class="form-horizontal">
+
+    <div class="form-group">
+        <label for="firstName" class="col-sm-2 control-label">First Name:</label>
+        <div class="col-sm-10">
+            <input type="text" name="firstName" class="form-control" placeholder="First Name" ng-model="user.first_name" required ng-minlength="2" ng-maxlength="15">
+            <div class="help-block" ng-messages="editForm.firstName.$error" ng-if="editForm.firstName.$touched">
+                <p ng-message="minlength, maxlength">Your first name must be between 2 and 15 characters long</p>
+                <p ng-message="required">Your first name is required.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="lastName" class="col-sm-2 control-label">Last Name:</label>
+        <div class="col-sm-10">
+            <input type="text" name="lastName" class="form-control" placeholder="Last Name" ng-model="user.last_name" required ng-minlength="2" ng-maxlength="15">
+            <div class="help-block" ng-messages="editForm.lastName.$error" ng-if="editForm.lastName.$touched">
+                <p ng-message="minlength, maxlength">Your last name must be between 2 and 15 characters long</p>
+                <p ng-message="required">Your last name is required.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="dateOfBirth" class="col-sm-2 control-label">Date of birth:</label>
+        <div class="col-sm-10">
+            <input type="date" name="dateOfBirth" class="form-control" placeholder="Date of birth" ng-model="user.date_of_birth" required>
+            <div class="help-block" ng-messages="editForm.dateOfBirth.$error" ng-if="editForm.dateOfBirth.$touched">
+                <p ng-message="required">Your date of birth is required.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email:</label>
+        <div class="col-sm-10">
+            <input type="email" name="email" class="form-control" placeholder="Email" ng-model="user.email" required>
+            <div class="help-block" ng-messages="editForm.email.$error" ng-if="editForm.email.$touched">
+                <p ng-message="email">This needs to be a valid email</p>
+                <p ng-message="required">Your email is required.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="avatar" class="col-sm-2 control-label">User image:</label>
+        <div class="col-sm-10">
+
+            <span class="btn btn-default btn-file">
+                Upload userimage <input type="file" name="avatar" class="form-control" placeholder="Upload avatar" ng-model="user.avatar" file-model="user.avatar">
+            </span> {{user.avatar.name}}
+            <div class="help-block">
+                <p>PNG, JPEG or BMP supported</p>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" ng-disabled="editForm.$invalid">Save</button>
+</form>
+
+<div class="page-header">
+    <h3>Change password</h3>
+</div>
+
+<form ng-submit="savePassword(editPasswordForm.$valid)" novalidate name="editPasswordForm" class="form-horizontal">
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Current password:</label>
+        <div class="col-sm-10">
+            <input type="password" name="password" class="form-control" placeholder="Current password" ng-model="newPassword.currentPassword" required ng-minlength="6" ng-maxlength="30">
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Password:</label>
+        <div class="col-sm-10">
+            <input type="password" name="password" class="form-control" placeholder="Password" ng-model="newPassword.password" required ng-minlength="6" ng-maxlength="30">
+            <div class="help-block" ng-messages="editPasswordForm.password.$error" ng-if="editPasswordForm.password.$touched">
+                <p ng-message="minlength, maxlength">Your password must be between 6 and 30 characters long</p>
+                <p ng-message="required">Your password is required.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password1" class="col-sm-2 control-label">Confirm:</label>
+        <div class="col-sm-10">
+            <input type="password" name="password1" class="form-control" placeholder="Confirm password" ng-model="newPassword.password1" compare-to="newPassword.password" required ng-minlength="6" ng-maxlength="30">
+            <div class="help-block" ng-messages="editPasswordForm.password1.$error" ng-if="editPasswordForm.password1.$touched">
+                <p ng-message="minlength, maxlength">Your password must be between 6 and 30 characters long</p>
+                <p ng-message="compareTo">Your passwords didn't match.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary" ng-disabled="editPasswordForm.$invalid">Save password</button>
+</form>

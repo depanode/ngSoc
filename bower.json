@@ -1,0 +1,30 @@
+{
+  "name": "reddit",
+  "description": "mean_soc_network",
+  "main": "",
+  "authors": [
+    "depaus"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-messages": "1.5.0",
+    "angular": "1.4.9",
+    "angular-socket-io": "0.7.0",
+    "socket.io-client": "1.4.5",
+    "angular-route": "1.5.0",
+    "angularjs-geolocation": "0.1.1",
+    "AngularJS-Toaster": "1.1.0"
+  },
+  "resolutions": {
+    "angular": "*"
+  }
+}

@@ -1,0 +1,123 @@
+<div class="page-header">
+    <h1>ngReddit - Register</h1>
+</div>
+
+<div ng-show="error" class="alert alert-danger row">
+    <span>{{ error.message }}</span>
+</div>
+
+<form ng-submit="register(registrationForm.$valid)" novalidate name="registrationForm" class="form-horizontal">
+
+    <div class="form-group">
+        <label for="username" class="col-sm-2 control-label">Username:</label>
+        <div class="col-sm-6">
+            <input type="text" name="username" class="form-control" placeholder="Username" ng-model="user.username" ng-model-options="{ updateOn: 'blur' }" ng-required="true" ng-minlength="3" ng-maxlength="15" ng-pattern="/^[a-zA-Z0-9]*$/">
+            <div class="help-block" ng-messages="registrationForm.username.$error" ng-if="registrationForm.username.$touched">
+                <p ng-message="minlength, maxlength">Your username must be between 3 and 15 characters long</p>
+                <p ng-message="required">Your username is required.</p>
+                <p ng-message="pattern">Single word only without whitespaces or special characters.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="firstName" class="col-sm-2 control-label">First Name:</label>
+        <div class="col-sm-6">
+            <input type="text" name="firstName" class="form-control" placeholder="First Name" ng-model="user.first_name" ng-required="true" ng-minlength="2" ng-maxlength="15">
+            <div class="help-block" ng-messages="registrationForm.firstName.$error" ng-if="registrationForm.firstName.$touched">
+                <p ng-message="minlength, maxlength">Your first name must be between 2 and 15 characters long</p>
+                <p ng-message="required">Your first name is required.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="lastName" class="col-sm-2 control-label">Last Name:</label>
+        <div class="col-sm-6">
+            <input type="text" name="lastName" class="form-control" placeholder="Last Name" ng-model="user.last_name" ng-required="true" ng-minlength="2" ng-maxlength="15">
+            <div class="help-block" ng-messages="registrationForm.lastName.$error" ng-if="registrationForm.lastName.$touched">
+                <p ng-message="minlength, maxlength">Your last name must be between 3 and 15 characters long</p>
+                <p ng-message="required">Your last name is required.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="optionsRadios" class="col-sm-2 control-label">Gender:</label>
+        <div class="col-sm-6">
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="male" ng-model="user.gender" ng-required="true">
+                    Male
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="female" ng-model="user.gender">
+                    Female
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="dateOfBirth" class="col-sm-2 control-label">Date of birth:</label>
+        <div class="col-sm-6">
+            <!--input type="date" name="dateOfBirth" class="form-control" placeholder="Date of birth" ng-model="user.date_of_birth" required-->
+            <input type="date" name="dateOfBirth" ng-model="user.date_of_birth" class="form-control"
+                   placeholder="yyyy-MM-dd" min="1930-01-01" max="2015-12-31" ng-required="true">
+            <div class="help-block" ng-messages="registrationForm.dateOfBirth.$error" ng-if="registrationForm.dateOfBirth.$touched">
+                <p ng-message="required">Your date of birth is required.</p>
+                <p ng-message="min, max">Date of birth is incorrect.</p>
+                <p ng-message="date">Correct format of date is 'yyyy-MM-dd', ex. 1990-07-31.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email:</label>
+        <div class="col-sm-6">
+            <input type="email" name="email" class="form-control" placeholder="Email" ng-model="user.email" ng-readonly="isInvited" ng-required="true">
+            <div class="help-block" ng-messages="registrationForm.email.$error" ng-if="registrationForm.email.$touched">
+                <p ng-message="email">This needs to be a valid email</p>
+                <p ng-message="required">Your email is required.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Password:</label>
+        <div class="col-sm-6">
+            <input type="password" name="password" class="form-control" placeholder="Password" ng-model="user.password" ng-required="true" ng-minlength="6" ng-maxlength="30">
+            <div class="help-block" ng-messages="registrationForm.password.$error" ng-if="registrationForm.password.$touched">
+                <p ng-message="minlength, maxlength">Your password must be between 6 and 30 characters long</p>
+                <p ng-message="required">Your password is required.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password1" class="col-sm-2 control-label">Confirm:</label>
+        <div class="col-sm-6">
+            <input type="password" name="password1" class="form-control" placeholder="Confirm password" ng-model="user.password1" compare-to="user.password" required ng-minlength="6" ng-maxlength="30">
+            <div class="help-block" ng-messages="registrationForm.password1.$error" ng-if="registrationForm.password1.$touched">
+                <p ng-message="minlength, maxlength">Your password must be between 6 and 30 characters long</p>
+                <p ng-message="compareTo">Your passwords didn't match.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="avatar" class="col-sm-2 control-label">User image:</label>
+        <div class="col-sm-6">
+
+            <span class="btn btn-default btn-file">
+                Upload userimage <input type="file" name="avatar" class="form-control" placeholder="Upload avatar" ng-model="user.avatar" file-model="user.avatar">
+            </span> {{user.avatar.name}}
+            <div class="help-block">
+                <p>PNG, JPEG or BMP supported</p>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" ng-disabled="registrationForm.$invalid">Register</button>
+</form>

@@ -1,0 +1,198 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel rounded shadow">
+        <div class="panel-body">
+            <div class="inner-all">
+                <ul class="list-unstyled">
+                    <li class="text-center">
+                        <img ng-src="/images/userimages/{{user.userimage}}" class="img-circle img-bordered-primary">
+                    </li>
+                    <li class="text-center">
+                        <h4 class="text-capitalize">{{user.first_name}} {{user.last_name}}</h4>
+                    </li>
+                    <li class="follow-btn">
+                        <a class="btn btn-success text-center btn-block" ng-if="!showFollowBtn().isFriend && !showFollowBtn().isMe && !showFollowBtn().inPending" ng-click="addFriend()">
+                            Follow
+                        </a>
+                        <a class="btn btn-success text-center btn-block" ng-if="showFollowBtn().inPending && !showFollowBtn().isMe"  disabled>
+                            Request sent
+                        </a>
+                        <a class="btn btn-danger text-center btn-block" ng-if="showFollowBtn().isFriend && !showFollowBtn().isMe" ng-click="removeFriend()">
+                            Unfollow
+                        </a>
+                    </li>
+
+
+                    <li ng-if="me._id === user._id">
+                        <div class="btn-group-vertical btn-block">
+                            <a href="#/users/{{me.username}}/edit" class="btn btn-default">
+                                <i class="fa fa-cog pull-right"></i>Edit Account
+                            </a>
+                            <a href="#/users/{{me.username}}/friends" class="btn btn-default">
+                                <i class="fa fa-comments pull-right"></i>My messages
+                            </a>
+                            <a class="btn btn-default" ng-click="logout()">
+                                <i class="fa fa-sign-out pull-right"></i>Logout
+                            </a>
+                        </div>
+                    </li>
+
+                    <li ng-show="showFollowBtn().isFriend && !showFollowBtn().isMe ">
+                        <a class="btn btn-primary text-center btn-block" ng-click="privateMessageFormIsShowing = !privateMessageFormIsShowing"
+                           ng-class="{'active': privateMessageFormIsShowing}">
+                            Private message
+                        </a>
+                        <form ng-show="privateMessageFormIsShowing" ng-submit="whispTo(user)">
+                            <div class="form-group">
+                                <textarea class="form-control" ng-model="privateMessage" placeholder="Write to {{user.first_name}} some nice here"></textarea>
+                            </div>
+                            <button class="btn btn-success btn-xs btn-block">Send message</button>
+                        </form>
+
+                    </li>
+
+                </ul>
+                <br>
+                <p class="text-center"><strong><i class="fa fa-info"></i> User's Information:</strong></p>
+                <table class="table table-userinfo panel panel-default rounded">
+                    <tr>
+                        <td><b>Name:</b></td><td>{{user.first_name}} {{user.last_name}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Username:</b></td><td>{{user.username}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Gender:</b></td><td>{{user.gender}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Date of birth:</b></td><td>{{user.date_of_birth | date: 'dd.MM.yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email:</b></td><td>{{user.email | date: 'dd.mm.yyyy'}}</td>
+                    </tr>
+                </table>
+                <p class="text-center"><strong><i class="fa fa-users"></i> {{user.first_name}}'s friendlist:</strong></p>
+                <table class="friend-list-mainpage" ng-if="user.friends.length">
+                    <tr ng-repeat="friend in user.friends">
+                        <td>
+                            <img ng-src="/images/userimages/{{friend.userimage}}" alt="Avatar" class="avatar">
+                            <a href="#/users/{{friend.username}}">{{friend.first_name | limitTo: 20}} {{friend.last_name | limitTo: 20}}</a>
+                        <td>
+                    </tr>
+                </table>
+
+                <div>
+                    <p class="text-center"><strong><i class="fa fa-share"></i> Invite your friend:</strong></p>
+                    <form ng-submit="inviteFriend()" class="input-group">
+                        <input class="form-control border no-shadow no-rounded" placeholder="Type your friend's email here" ng-model="inviteEmail">
+                        <span class="input-group-btn">
+                            <button class="btn btn-success no-rounded" type="submit">
+                                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                                Send invite
+                            </button>
+                        </span>
+                    </form>
+                </div><!-- /input-group -->
+            </div>
+        </div>
+    </div>
+  </div>
+
+    <div class="col-md-8">
+
+        <form ng-submit="addPost()" ng-if="me._id === user._id">
+
+            <div class="form-group">
+                <textarea class="form-control" placeholder="I'm thinking about..." ng-model="post.title"></textarea>
+            </div>
+
+            <span class="btn btn-default btn-file">
+                <i class="fa fa-picture-o"></i>
+                Add image <input type="file" ng-model="post.image" file-model="post.image">
+            </span>
+
+            <span>{{post.image.name | limitTo: 30}}</span>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-comment-o"></i>
+                Add new post
+            </button>
+
+        </form>
+
+        <!---------------------------------- POSTS -------------------------->
+        <div class="panel panel-white post panel-shadow" ng-repeat="post in posts | orderBy: '-'">
+            <a class="pull-right" style="margin: 15px;">
+                <img class="media-object post-image img-thumbnail" ng-src="/images/postimages/{{post.image}}">
+            </a>
+                <div>
+                    <div class="post-heading">
+                        <div class="pull-left image">
+                            <img ng-src="images/userimages/{{post.author.userimage}}" alt="user profile image"
+                                 class="img-circle avatar">
+                        </div>
+                        <div class="pull-left meta">
+                            <div class="title h5">
+                                <b>{{post.author.first_name}} {{post.author.last_name}}</b>
+                            </div>
+                            <h6 class="text-muted time">{{post.date | date: 'dd MMMM yyyy HH:mm'}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-description">
+                    <p>{{post.title}}</p>
+                    <div class="stats">
+                        <button class="btn btn-default stat-item" ng-click="upvote(post)" ng-disabled="post.upvotes.indexOf(me._id) != -1">
+                            <i class="fa fa-thumbs-up icon"></i>
+                            {{post.upvotes.length}}
+                        </button>
+                        <a class="btn btn-default stat-item" ng-show="commentFormInPost != post._id" ng-click="showCommentForm(post._id)">
+                            <i class="fa fa-angle-double-down"></i>
+                            Add comment
+                        </a>
+                        <a class="btn btn-default stat-item" ng-show="commentFormInPost == post._id" ng-click="showCommentForm(null)">
+                            <i class="fa fa-angle-double-up"></i>
+                            Hide comment form
+                        </a>
+                        <button class="btn btn-danger" ng-if="post.author._id == me._id" ng-click="deletePost(post)">
+                            <i class="fa fa-recycle"></i>
+                            Delete post
+                        </button>
+                    </div>
+                </div>
+            <div class="post-footer">
+                <form ng-submit="addComment(post)" ng-show="commentFormInPost == post._id">
+                    <div class="input-group">
+                        <input placeholder="Add a comment" name="comment_body" type="text" class="form-control"
+                               ng-model="comment.comment_body">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary no-rounded" type="submit">Add comment</button>
+                        </span>
+                    </div>
+                </form>
+
+                <ul class="comments-list">
+
+                    <li class="comment" ng-repeat="comment in post.comments">
+                        <a href="#" class="pull-left">
+                            <img ng-src="images/userimages/{{comment.author.userimage}}" alt="avatar" class="avatar">
+                        </a>
+                        <div class="comment-body">
+                            <div class="comment-heading">
+                                <h4 class="user"><a href="#/users/{{comment.author.username}}">{{comment.author.first_name}} {{comment.author.last_name}}</a>
+                                </h4>
+                                <h5 class="time">{{comment.date | date: 'dd MMMM yyyy HH:mm'}}</h5>
+                            </div>
+                            <p>{{comment.body}}</p>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!---------------------------------- /POSTS-------------------------->
+    </div>
+</div>
+
+
+
